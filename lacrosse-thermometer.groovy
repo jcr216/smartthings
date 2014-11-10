@@ -78,7 +78,7 @@ def updated() {
 
 def asDateString(Long timestamp) {
     def date = new java.util.Date(timestamp)
-	def dateDf = new java.text.SimpleDateFormat("d/M/y") 
+	def dateDf = new java.text.SimpleDateFormat("M/d/y") 
     def timeDf = new java.text.SimpleDateFormat("h:m a")
     
     if (location.timeZone) {
