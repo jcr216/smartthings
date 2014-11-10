@@ -43,7 +43,7 @@ metadata {
 		}
         
         valueTile("battery", "device.battery", inactiveLabel: false, decoration: "flat") {
-			state "default", label: 'Battery\n${currentValue}', unit: ""
+			state "default", label: '${currentValue}', unit: ""
 		}
         
         valueTile("lqi", "device.lqi", inactiveLabel: false, decoration: "flat") {
@@ -80,6 +80,16 @@ def asDateString(Long timestamp) {
     def date = new java.util.Date(timestamp)
 	def dateDf = new java.text.SimpleDateFormat("d/M/y") 
     def timeDf = new java.text.SimpleDateFormat("h:m a")
+    
+    if (location.timeZone) {
+        dateDf.setTimeZone(location.timeZone)
+        timeDf.setTimeZone(location.timeZone)
+    }
+    else {
+        dateDf.setTimeZone(TimeZone.getTimeZone("America/New_York"))
+        timeDf.setTimeZone(TimeZone.getTimeZone("America/New_York"))
+    }
+    
     return timeDf.format(date) + "\n" + dateDf.format(date)
 }
 
@@ -146,9 +156,9 @@ def poll() {
             // battery
             def battery;
             if (jsonValues.lowbatt == 0)
-            	battery = "Ok"
+            	battery = "Battery Ok"
             else
-            	battery = "Low"
+            	battery = "Battery Low"
             
             // send some events
             log.debug "Sending events"
